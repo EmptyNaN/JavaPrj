@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="ru" xml:lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <link href="StyleSheet.css" rel="stylesheet">
+</head>
+<body>
+<meta charset="UTF-8">
+<header>
+    <p><a href="index.html">Холодильное оборудование</a></p>
+    <p><a href="coolants.html">Хладагенты</a></p>
+    <p><a href="countries.html">Страны</a></p>
+    <p><a href="cities.html">Города</a></p>
+    <p><a href="distr.html">Дистрибьюторы</a></p>
+    <p><a href="colors.html">Цвета</a></p>
+    <p><a href="mans.html">Производители</a></p>
+    <p><a href="types.html">Типы оборудования</a></p>
+    <br>
+</header>
+
+<h2>Холодильное оборудование</h2>
+
+
+<b>Добавление</b>
+<br>
+<form action="#">
+    <input id="name" placeholder="Модель">
+    <input id="color" placeholder="Цвет">
+    <input id="coolant" placeholder="Хладагент">
+    <input id="distr" placeholder="Дистрибьютор">
+    <input id="man" placeholder="Производитель">
+    <input id="type" placeholder="Тип">
+    <input id="power" placeholder="Мощность">
+    <input id="cost" placeholder="Стоимость">
+    <input id="volume" placeholder="Объём">
+    <br>
+    <button onclick="createRefEquip()">Добавить модель</button>
+</form>
+<br>
+<b>Поиск по полям</b>
+<br>
+
+<script>
+
+function searchAllByName() {
+        var name = document.getElementById("search_field").value;
+        if (name.length == 0) loadRefEquip();
+        else {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                var RefEquip = JSON.parse(this.responseText);
+                var html = '<tr>\n' +
+                    '        <th>Id</th>\n' +
+                    '        <th>Модель</th>\n' +
+                    '        <th>Id Цвета</th>\n' +
+                    '        <th>Id Производителя</th>\n' +
+                    '        <th>Id Дистрибьютора</th>\n' +
+                    '        <th>Id хладагента</th>\n' +
+                    '        <th>Id Типа</th>\n' +
+                    '        <th>Стоимость</th>\n' +
+                    '        <th>Объём</th>\n' +
+                    '        <th>Мощность</th>\n' +
+                    '        <th>Удаление</th>\n' +
+                    '    </tr>';
+                for (var i = 0; i < RefEquip.length; i++) {
+                        var ref = RefEquip[i];
+                        if (ref.name.toLowerCase().includes(name.toLowerCase())) {
+                        console.log(ref);
+                        html = html + '<tr><td>' + ref.id + '</td>\n' +
+                            '        <td>' + ref.name + '</td>\n' +
+                        '        <td>' + ref.idcolor + '</td>' +
+                        '        <td>' + ref.idrar + '</td>' +
+                        '        <td>' + ref.idcond + '</td>' +
+                        '        <td>' + ref.cnumber + '</td>' +
+                        '        <td>' + ref.idlang + '</td>' +
+                        '        <td>' + ref.cost + '</td>' +
+                        '        <td>' + ref.amount + '</td>' +
+                        '        <td>' + ref.idexp + '</td>' +
+                        '        <td>' + ref.idseller + '</td>' +
+                        '        <td>' + ref.idillustrator + '</td>' +
+                            '        <td><button onclick="deleteref(' + ref.id + ')">Удалить</button></td></tr>';
+                    }
+                }
+                document.getElementById("RefEquipList").innerHTML = html;
+            }
+        };
+        xhttp.open("GET", "http://localhost:5438/refEquip/findAll", true);
+        xhttp.send();
+        }
+    }
+
+function searchAllByIdcolor() {
+        var name = document.getElementById("search_idcolor_field").value;
+        if (name.length == 0) loadRefEquip();
+        else {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                var RefEquip = JSON.parse(this.responseText);
+               var html = '<tr>\n' +
+                    '        <th>Id</th>\n' +
+                    '        <th>Модель</th>\n' +
+                    '        <th>Id Цвета</th>\n' +
+                    '        <th>Id Производителя</th>\n' +
+                    '        <th>Id Дистрибьютора</th>\n' +
+                    '        <th>Id хладагента</th>\n' +
+                    '        <th>Id Типа</th>\n' +
+                    '        <th>Стоимость</th>\n' +
+                    '        <th>Объём</th>\n' +
+                    '        <th>Мощность</th>\n' +
+                    '        <th>Удаление</th>\n' +
+                    '    </tr>';
+                for (var i = 0; i < RefEquip.length; i++) {
+                        var ref = RefEquip[i];
+                        if (ref.idcolor.toLowerCase().includes(name.toLowerCase())) {
+                        console.log(ref);
+                        html = html + '<tr><td>' + ref.id + '</td>\n' +
+                            '        <td>' + ref.name + '</td>\n' +
+                        '        <td>' + ref.idcolor + '</td>' +
+                        '        <td>' + ref.idrar + '</td>' +
+                        '        <td>' + ref.idcond + '</td>' +
+                        '        <td>' + ref.cnumber + '</td>' +
+                        '        <td>' + ref.idlang + '</td>' +
+                        '        <td>' + ref.cost + '</td>' +
+                        '        <td>' + ref.amount + '</td>' +
+                        '        <td>' + ref.idexp + '</td>' +
+                        '        <td>' + ref.idseller + '</td>' +
+                        '        <td>' + ref.idillustrator + '</td>' +
+                            '        <td><button onclick="deleteref(' + ref.id + ')">Удалить</button></td></tr>';
+                    }
+                }
+                document.getElementById("RefEquipList").innerHTML = html;
+            }
+        };
+        xhttp.open("GET", "http://localhost:5438/refrigeration_equipment/findAll", true);
+        xhttp.send();
+        }
+    }
+
+function searchAllByIdrar() {
+        var name = document.getElementById("search_idrar_field").value;
+        if (name.length == 0) loadRefEquip();
+        else {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                var RefEquip = JSON.parse(this.responseText);
+               var html = '<tr>\n' +
+                    '        <th>Id</th>\n' +
+                    '        <th>Модель</th>\n' +
+                    '        <th>Id Цвета</th>\n' +
+                    '        <th>Id Производителя</th>\n' +
+                    '        <th>Id Дистрибьютора</th>\n' +
+                    '        <th>Id хладагента</th>\n' +
+                    '        <th>Id Типа</th>\n' +
+                    '        <th>Стоимость</th>\n' +
+                    '        <th>Объём</th>\n' +
+                    '        <th>Мощность</th>\n' +
+                    '        <th>Удаление</th>\n' +
+                    '    </tr>';
+                for (var i = 0; i < RefEquip.length; i++) {
+                        var ref = RefEquip[i];
+                        if (ref.idrar.toLowerCase().includes(name.toLowerCase())) {
+                        console.log(ref);
+                        html = html + '<tr><td>' + ref.id + '</td>\n' +
+                            '        <td>' + ref.name + '</td>\n' +
+                        '        <td>' + ref.idcolor + '</td>' +
+                        '        <td>' + ref.idrar + '</td>' +
+                        '        <td>' + ref.idcond + '</td>' +
+                        '        <td>' + ref.cnumber + '</td>' +
+                        '        <td>' + ref.idlang + '</td>' +
+                        '        <td>' + ref.cost + '</td>' +
+                        '        <td>' + ref.amount + '</td>' +
+                        '        <td>' + ref.idexp + '</td>' +
+                        '        <td>' + ref.idseller + '</td>' +
+                        '        <td>' + ref.idillustrator + '</td>' +
+                            '        <td><button onclick="deleteref(' + ref.id + ')">Удалить</button></td></tr>';
+                    }
+                }
+                document.getElementById("RefEquipList").innerHTML = html;
+            }
+        };
+        xhttp.open("GET", "http://localhost:5438/refrigeration_equipment/findAll", true);
+        xhttp.send();
+        }
+    }
+
+function searchAllByIdexp() {
+        var name = document.getElementById("search_idexp_field").value;
+        if (name.length == 0) loadRefEquip();
+        else {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                var RefEquip = JSON.parse(this.responseText);
+                var html = '<tr>\n' +
+                    '        <th>Id</th>\n' +
+                    '        <th>Модель</th>\n' +
+                    '        <th>Id Цвета</th>\n' +
+                    '        <th>Id Производителя</th>\n' +
+                    '        <th>Id Дистрибьютора</th>\n' +
+                    '        <th>Id хладагента</th>\n' +
+                    '        <th>Id Типа</th>\n' +
+                    '        <th>Стоимость</th>\n' +
+                    '        <th>Объём</th>\n' +
+                    '        <th>Мощность</th>\n' +
+                    '        <th>Удаление</th>\n' +
+                    '    </tr>';
+                for (var i = 0; i < RefEquip.length; i++) {
+                        var ref = RefEquip[i];
+                        if (ref.idexp==name) {
+                        console.log(ref);
+                        html = html + '<tr><td>' + ref.id + '</td>\n' +
+                            '        <td>' + ref.name + '</td>\n' +
+                        '        <td>' + ref.idcolor + '</td>' +
+                        '        <td>' + ref.idrar + '</td>' +
+                        '        <td>' + ref.idcond + '</td>' +
+                        '        <td>' + ref.cnumber + '</td>' +
+                        '        <td>' + ref.idlang + '</td>' +
+                        '        <td>' + ref.cost + '</td>' +
+                        '        <td>' + ref.amount + '</td>' +
+                        '        <td>' + ref.idexp + '</td>' +
+                        '        <td>' + ref.idseller + '</td>' +
+                        '        <td>' + ref.idillustrator + '</td>' +
+                            '        <td><button onclick="deleteref(' + ref.id + ')">Удалить</button></td></tr>';
+                    }
+                }
+                document.getElementById("RefEquipList").innerHTML = html;
+            }
+        };
+        xhttp.open("GET", "http://localhost:5438/refrigeration_equipment/findAll", true);
+        xhttp.send();
+        }
+    }
+
+function searchAllByIdcond() {
+        var name = document.getElementById("search_idcond_field").value;
+        if (name.length == 0) loadRefEquip();
+        else {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                var RefEquip = JSON.parse(this.responseText);
+               var html = '<tr>\n' +
+                    '        <th>Id</th>\n' +
+                    '        <th>Модель</th>\n' +
+                    '        <th>Id Цвета</th>\n' +
+                    '        <th>Id Производителя</th>\n' +
+                    '        <th>Id Дистрибьютора</th>\n' +
+                    '        <th>Id хладагента</th>\n' +
+                    '        <th>Id Типа</th>\n' +
+                    '        <th>Стоимость</th>\n' +
+                    '        <th>Объём</th>\n' +
+                    '        <th>Мощность</th>\n' +
+                    '        <th>Удаление</th>\n' +
+                    '    </tr>';
+                for (var i = 0; i < RefEquip.length; i++) {
+                        var ref = RefEquip[i];
+                        if (ref.idcond.toLowerCase().includes(name.toLowerCase())) {
+                        console.log(ref);
+                        html = html + '<tr><td>' + ref.id + '</td>\n' +
+                            '        <td>' + ref.name + '</td>\n' +
+                        '        <td>' + ref.idcolor + '</td>' +
+                        '        <td>' + ref.idrar + '</td>' +
+                        '        <td>' + ref.idcond + '</td>' +
+                        '        <td>' + ref.cnumber + '</td>' +
+                        '        <td>' + ref.idlang + '</td>' +
+                        '        <td>' + ref.cost + '</td>' +
+                        '        <td>' + ref.amount + '</td>' +
+                        '        <td>' + ref.idexp + '</td>' +
+                        '        <td>' + ref.idseller + '</td>' +
+                        '        <td>' + ref.idillustrator + '</td>' +
+                            '        <td><button onclick="deleteref(' + ref.id + ')">Удалить</button></td></tr>';
+                    }
+                }
+                document.getElementById("RefEquipList").innerHTML = html;
+            }
+        };
+        xhttp.open("GET", "http://localhost:5438/refrigeration_equipment/findAll", true);
+        xhttp.send();
+        }
+    }
+
+function searchAllByIdillustrator() {
+        var name = document.getElementById("search_idillustrator_field").value;
+        if (name.length == 0) loadRefEquip();
+        else {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                var RefEquip = JSON.parse(this.responseText);
+                var html = '<tr>\n' +
+                    '        <th>Id</th>\n' +
+                    '        <th>Модель</th>\n' +
+                    '        <th>Id Цвета</th>\n' +
+                    '        <th>Id Производителя</th>\n' +
+                    '        <th>Id Дистрибьютора</th>\n' +
+                    '        <th>Id хладагента</th>\n' +
+                    '        <th>Id Типа</th>\n' +
+                    '        <th>Стоимость</th>\n' +
+                    '        <th>Объём</th>\n' +
+                    '        <th>Мощность</th>\n' +
+                    '        <th>Удаление</th>\n' +
+                    '    </tr>';
+                for (var i = 0; i < RefEquip.length; i++) {
+                        var ref = RefEquip[i];
+                        if (ref.idillustrator==name) {
+                        console.log(ref);
+                        html = html + '<tr><td>' + ref.id + '</td>\n' +
+                            '        <td>' + ref.name + '</td>\n' +
+                        '        <td>' + ref.idcolor + '</td>' +
+                        '        <td>' + ref.idrar + '</td>' +
+                        '        <td>' + ref.idcond + '</td>' +
+                        '        <td>' + ref.cnumber + '</td>' +
+                        '        <td>' + ref.idlang + '</td>' +
+                        '        <td>' + ref.cost + '</td>' +
+                        '        <td>' + ref.amount + '</td>' +
+                        '        <td>' + ref.idexp + '</td>' +
+                        '        <td>' + ref.idseller + '</td>' +
+                        '        <td>' + ref.idillustrator + '</td>' +
+                            '        <td><button onclick="deleteref(' + ref.id + ')">Удалить</button></td></tr>';
+                    }
+                }
+                document.getElementById("RefEquipList").innerHTML = html;
+            }
+        };
+        xhttp.open("GET", "http://localhost:5438/refrigeration_equipment/findAll", true);
+        xhttp.send();
+        }
+    }
+
+function searchAllByIdlang() {
+        var name = document.getElementById("search_idlang_field").value;
+        if (name.length == 0) loadRefEquip();
+        else {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                var RefEquip = JSON.parse(this.responseText);
+               var html = '<tr>\n' +
+                    '        <th>Id</th>\n' +
+                    '        <th>Модель</th>\n' +
+                    '        <th>Id Цвета</th>\n' +
+                    '        <th>Id Производителя</th>\n' +
+                    '        <th>Id Дистрибьютора</th>\n' +
+                    '        <th>Id хладагента</th>\n' +
+                    '        <th>Id Типа</th>\n' +
+                    '        <th>Стоимость</th>\n' +
+                    '        <th>Объём</th>\n' +
+                    '        <th>Мощность</th>\n' +
+                    '        <th>Удаление</th>\n' +
+                    '    </tr>';
+                for (var i = 0; i < RefEquip.length; i++) {
+                        var ref = RefEquip[i];
+                        if (ref.idlang==name) {
+                        console.log(ref);
+                        html = html + '<tr><td>' + ref.id + '</td>\n' +
+                            '        <td>' + ref.name + '</td>\n' +
+                        '        <td>' + ref.idcolor + '</td>' +
+                        '        <td>' + ref.idrar + '</td>' +
+                        '        <td>' + ref.idcond + '</td>' +
+                        '        <td>' + ref.cnumber + '</td>' +
+                        '        <td>' + ref.idlang + '</td>' +
+                        '        <td>' + ref.cost + '</td>' +
+                        '        <td>' + ref.amount + '</td>' +
+                        '        <td>' + ref.idexp + '</td>' +
+                        '        <td>' + ref.idseller + '</td>' +
+                        '        <td>' + ref.idillustrator + '</td>' +
+                            '        <td><button onclick="deleteref(' + ref.id + ')">Удалить</button></td></tr>';
+                    }
+                }
+                document.getElementById("RefEquipList").innerHTML = html;
+            }
+        };
+        xhttp.open("GET", "http://localhost:5438/refrigeration_equipment/findAll", true);
+        xhttp.send();
+        }
+    }
+
+    function searchAllByIdseller() {
+        var name = document.getElementById("search_idseller_field").value;
+        if (name.length == 0) loadRefEquip();
+        else {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                var RefEquip = JSON.parse(this.responseText);
+               var html = '<tr>\n' +
+                    '        <th>Id</th>\n' +
+                    '        <th>Модель</th>\n' +
+                    '        <th>Id Цвета</th>\n' +
+                    '        <th>Id Производителя</th>\n' +
+                    '        <th>Id Дистрибьютора</th>\n' +
+                    '        <th>Id хладагента</th>\n' +
+                    '        <th>Id Типа</th>\n' +
+                    '        <th>Стоимость</th>\n' +
+                    '        <th>Объём</th>\n' +
+                    '        <th>Мощность</th>\n' +
+                    '        <th>Удаление</th>\n' +
+                    '    </tr>';
+                for (var i = 0; i < RefEquip.length; i++) {
+                        var ref = RefEquip[i];
+                        if (ref.idseller==name) {
+                        console.log(ref);
+                        html = html + '<tr><td>' + ref.id + '</td>\n' +
+                            '        <td>' + ref.name + '</td>\n' +
+                        '        <td>' + ref.idcolor + '</td>' +
+                        '        <td>' + ref.idrar + '</td>' +
+                        '        <td>' + ref.idcond + '</td>' +
+                        '        <td>' + ref.cnumber + '</td>' +
+                        '        <td>' + ref.idlang + '</td>' +
+                        '        <td>' + ref.cost + '</td>' +
+                        '        <td>' + ref.amount + '</td>' +
+                        '        <td>' + ref.idexp + '</td>' +
+                        '        <td>' + ref.idseller + '</td>' +
+                        '        <td>' + ref.idillustrator + '</td>' +
+                            '        <td><button onclick="deleteref(' + ref.id + ')">Удалить</button></td></tr>';
+                    }
+                }
+                document.getElementById("RefEquipList").innerHTML = html;
+            }
+        };
+        xhttp.open("GET", "http://localhost:5438/refrigeration_equipment/findAll", true);
+        xhttp.send();
+        }
+    }
+
+function searchAllByCnumber() {
+        var name = document.getElementById("search_cnumber_field").value;
+        if (name.length == 0) loadRefEquip();
+        else {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                var RefEquip = JSON.parse(this.responseText);
+                var html = '<tr>\n' +
+                    '        <th>Id</th>\n' +
+                    '        <th>Модель</th>\n' +
+                    '        <th>Id Цвета</th>\n' +
+                    '        <th>Id Производителя</th>\n' +
+                    '        <th>Id Дистрибьютора</th>\n' +
+                    '        <th>Id хладагента</th>\n' +
+                    '        <th>Id Типа</th>\n' +
+                    '        <th>Стоимость</th>\n' +
+                    '        <th>Объём</th>\n' +
+                    '        <th>Мощность</th>\n' +
+                    '        <th>Удаление</th>\n' +
+                    '    </tr>';
+                for (var i = 0; i < RefEquip.length; i++) {
+                        var ref = RefEquip[i];
+                        if (ref.cnumber==name) {
+                        console.log(ref);
+                        html = html + '<tr><td>' + ref.id + '</td>\n' +
+                            '        <td>' + ref.name + '</td>\n' +
+                        '        <td>' + ref.idcolor + '</td>' +
+                        '        <td>' + ref.idrar + '</td>' +
+                        '        <td>' + ref.idcond + '</td>' +
+                        '        <td>' + ref.cnumber + '</td>' +
+                        '        <td>' + ref.idlang + '</td>' +
+                        '        <td>' + ref.cost + '</td>' +
+                        '        <td>' + ref.amount + '</td>' +
+                        '        <td>' + ref.idexp + '</td>' +
+                        '        <td>' + ref.idseller + '</td>' +
+                        '        <td>' + ref.idillustrator + '</td>' +
+                            '        <td><button onclick="deleteref(' + ref.id + ')">Удалить</button></td></tr>';
+                    }
+                }
+                document.getElementById("RefEquipList").innerHTML = html;
+            }
+        };
+        xhttp.open("GET", "http://localhost:5438/refrigeration_equipment/findAll", true);
+        xhttp.send();
+        }
+    }
+
+    function searchAllByCost() {
+        var param = document.getElementById("filter_cost_field").value;
+        if (param.length == 0) loadRefEquip();
+        else {
+        var operation = document.getElementById("filter_options").value;
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                var RefEquip = JSON.parse(this.responseText);
+                var html = '<tr>\n' +
+                    '        <th>Id</th>\n' +
+                    '        <th>Модель</th>\n' +
+                    '        <th>Id Цвета</th>\n' +
+                    '        <th>Id Производителя</th>\n' +
+                    '        <th>Id Дистрибьютора</th>\n' +
+                    '        <th>Id хладагента</th>\n' +
+                    '        <th>Id Типа</th>\n' +
+                    '        <th>Стоимость</th>\n' +
+                    '        <th>Объём</th>\n' +
+                    '        <th>Мощность</th>\n' +
+                    '        <th>Удаление</th>\n' +
+                    '    </tr>';
+                for (var i = 0; i < RefEquip.length; i++) {
+                        var ref = RefEquip[i];
+                        if (operation == "Больше") {
+                        if (ref.cost > param) {
+                        console.log(ref);
+                        html = html + '<tr><td>' + ref.id + '</td>\n' +
+                            '        <td>' + ref.name + '</td>\n' +
+                        '        <td>' + ref.idcolor + '</td>' +
+                        '        <td>' + ref.idrar + '</td>' +
+                        '        <td>' + ref.idcond + '</td>' +
+                        '        <td>' + ref.cnumber + '</td>' +
+                        '        <td>' + ref.idlang + '</td>' +
+                        '        <td>' + ref.cost + '</td>' +
+                        '        <td>' + ref.amount + '</td>' +
+                        '        <td>' + ref.idexp + '</td>' +
+                        '        <td>' + ref.idseller + '</td>' +
+                        '        <td>' + ref.idillustrator + '</td>' +
+                            '        <td><button onclick="deleteref(' + ref.id + ')">Удалить</button></td></tr>';
+                    }
+                    }
+                    if (operation == "Меньше") {
+                        if (ref.cost < param) {
+                        console.log(ref);
+                        html = html + '<tr><td>' + ref.id + '</td>\n' +
+                            '        <td>' + ref.name + '</td>\n' +
+                        '        <td>' + ref.idcolor + '</td>' +
+                        '        <td>' + ref.idrar + '</td>' +
+                        '        <td>' + ref.idcond + '</td>' +
+                        '        <td>' + ref.cnumber + '</td>' +
+                        '        <td>' + ref.idlang + '</td>' +
+                        '        <td>' + ref.cost + '</td>' +
+                        '        <td>' + ref.amount + '</td>' +
+                        '        <td>' + ref.idexp + '</td>' +
+                        '        <td>' + ref.idseller + '</td>' +
+                        '        <td>' + ref.idillustrator + '</td>' +
+                            '        <td><button onclick="deleteref(' + ref.id + ')">Удалить</button></td></tr>';
+                    }
+                    }
+                    if (operation == "Равно") {
+                        if (ref.cost == param) {
+                        console.log(ref);
+                        html = html + '<tr><td>' + ref.id + '</td>\n' +
+                            '        <td>' + ref.name + '</td>\n' +
+                        '        <td>' + ref.idcolor + '</td>' +
+                        '        <td>' + ref.idrar + '</td>' +
+                        '        <td>' + ref.idcond + '</td>' +
+                        '        <td>' + ref.cnumber + '</td>' +
+                        '        <td>' + ref.idlang + '</td>' +
+                        '        <td>' + ref.cost + '</td>' +
+                        '        <td>' + ref.amount + '</td>' +
+                        '        <td>' + ref.idexp + '</td>' +
+                        '        <td>' + ref.idseller + '</td>' +
+                        '        <td>' + ref.idillustrator + '</td>' +
+                            '        <td><button onclick="deleteref(' + ref.id + ')">Удалить</button></td></tr>';
+                    }
+                    }
+                }
+                document.getElementById("RefEquipList").innerHTML = html;
+            }
+        };
+        xhttp.open("GET", "http://localhost:5438/refrigeration_equipment/findAll", true);
+        xhttp.send();
+        }
+    }
+
+    function searchAllByAmount() {
+        var param = document.getElementById("filter_am_field").value;
+        if (param.length == 0) loadRefEquip();
+        else {
+        var operation = document.getElementById("filter_am_options").value;
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                var RefEquip = JSON.parse(this.responseText);
+               var html = '<tr>\n' +
+                    '        <th>Id</th>\n' +
+                    '        <th>Модель</th>\n' +
+                    '        <th>Id Цвета</th>\n' +
+                    '        <th>Id Производителя</th>\n' +
+                    '        <th>Id Дистрибьютора</th>\n' +
+                    '        <th>Id хладагента</th>\n' +
+                    '        <th>Id Типа</th>\n' +
+                    '        <th>Стоимость</th>\n' +
+                    '        <th>Объём</th>\n' +
+                    '        <th>Мощность</th>\n' +
+                    '        <th>Удаление</th>\n' +
+                    '    </tr>';
+                for (var i = 0; i < RefEquip.length; i++) {
+                        var ref = RefEquip[i];
+                        if (operation == "Больше") {
+                        if (ref.amount > param) {
+                        console.log(ref);
+                        html = html + '<tr><td>' + ref.id + '</td>\n' +
+                            '        <td>' + ref.name + '</td>\n' +
+                        '        <td>' + ref.idcolor + '</td>' +
+                        '        <td>' + ref.idrar + '</td>' +
+                        '        <td>' + ref.idcond + '</td>' +
+                        '        <td>' + ref.cnumber + '</td>' +
+                        '        <td>' + ref.idlang + '</td>' +
+                        '        <td>' + ref.cost + '</td>' +
+                        '        <td>' + ref.amount + '</td>' +
+                        '        <td>' + ref.idexp + '</td>' +
+                        '        <td>' + ref.idseller + '</td>' +
+                        '        <td>' + ref.idillustrator + '</td>' +
+                            '        <td><button onclick="deleteref(' + ref.id + ')">Удалить</button></td></tr>';
+                    }
+                    }
+                    if (operation == "Меньше") {
+                        if (ref.amount < param) {
+                        console.log(ref);
+                        html = html + '<tr><td>' + ref.id + '</td>\n' +
+                            '        <td>' + ref.name + '</td>\n' +
+                        '        <td>' + ref.idcolor + '</td>' +
+                        '        <td>' + ref.idrar + '</td>' +
+                        '        <td>' + ref.idcond + '</td>' +
+                        '        <td>' + ref.cnumber + '</td>' +
+                        '        <td>' + ref.idlang + '</td>' +
+                        '        <td>' + ref.cost + '</td>' +
+                        '        <td>' + ref.amount + '</td>' +
+                        '        <td>' + ref.idexp + '</td>' +
+                        '        <td>' + ref.idseller + '</td>' +
+                        '        <td>' + ref.idillustrator + '</td>' +
+                            '        <td><button onclick="deleteref(' + ref.id + ')">Удалить</button></td></tr>';
+                    }
+                    }
+                    if (operation == "Равно") {
+                        if (ref.amount == param) {
+                        console.log(ref);
+                        html = html + '<tr><td>' + ref.id + '</td>\n' +
+                            '        <td>' + ref.name + '</td>\n' +
+                        '        <td>' + ref.idcolor + '</td>' +
+                        '        <td>' + ref.idrar + '</td>' +
+                        '        <td>' + ref.idcond + '</td>' +
+                        '        <td>' + ref.cnumber + '</td>' +
+                        '        <td>' + ref.idlang + '</td>' +
+                        '        <td>' + ref.cost + '</td>' +
+                        '        <td>' + ref.amount + '</td>' +
+                        '        <td>' + ref.idexp + '</td>' +
+                        '        <td>' + ref.idseller + '</td>' +
+                        '        <td>' + ref.idillustrator + '</td>' +
+                            '        <td><button onclick="deleteref(' + ref.id + ')">Удалить</button></td></tr>';
+                    }
+                    }
+                }
+                document.getElementById("RefEquipList").innerHTML = html;
+            }
+        };
+        xhttp.open("GET", "http://localhost:5438/refrigeration_equipment/findAll", true);
+        xhttp.send();
+        }
+    }
+
+    function deleteref(refId) {
+        var xhttp = new XMLHttpRequest();
+        xhttp.open("DELETE", "http://localhost:5438/refrigeration_equipment/delete/" + refId, true);
+        xhttp.send();
+    }
+
+    function createref() {
+        var refName = document.getElementById("ref_name").value;
+        var refIdcolor = document.getElementById("ref_idcolor").value;
+        var refIdrar = document.getElementById("ref_idrar").value;
+        var refIdcond = document.getElementById("ref_idcond").value;
+        var refCnumber = document.getElementById("ref_cnumber").value;
+        var refIdlang = document.getElementById("ref_idlang").value;
+	    var refCost = document.getElementById("ref_cost").value;
+        var refAmount = document.getElementById("ref_amount").value;
+        var refIdexp = document.getElementById("ref_idexp").value;
+        var refIdseller = document.getElementById("ref_idseller").value;
+        var refIdillustrator = document.getElementById("ref_idillustrator").value;
+        var xmlhttp = new XMLHttpRequest();   // new HttpRequest instance
+        xmlhttp.open("POST", "http://localhost:8091/RefEquip/save");
+        xmlhttp.setRequestHeader("Content-Type", "application/json");
+        xmlhttp.send(JSON.stringify({name: refName, idcolor: refIdcolor, idrar: refIdrar, idcond: refIdcond, cnumber: refCnumber, idlang: refIdlang, cost: refCost, amount: refAmount, idexp: refIdexp, idseller: refIdseller, idillustrator: refIdillustrator}));
+
+        loadRefEquip();
+    }
+
+    function loadRefEquip() {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                var refEquip = JSON.parse(this.responseText);
+                var html = '<tr>\n' +
+                    '        <th>Id</th>\n' +
+                    '        <th>Модель</th>\n' +
+                    '        <th>Id Цвета</th>\n' +
+                    '        <th>Id Производителя</th>\n' +
+                    '        <th>Id Дистрибьютора</th>\n' +
+                    '        <th>Id хладагента</th>\n' +
+                    '        <th>Id Типа</th>\n' +
+                    '        <th>Стоимость</th>\n' +
+                    '        <th>Объём</th>\n' +
+                    '        <th>Мощность</th>\n' +
+                    '        <th>Удаление</th>\n' +
+                    '    </tr>';
+                for (var i = 0; i < refEquip.length; i++) {
+                    var fridge = refEquip[i];
+                    console.log(fridge);
+                    html = html + '<tr><td>' + fridge.id + '</td>\n' +
+                        '        <td>' + fridge.name + '</td>\n' +
+                        '        <td>' + fridge.color + '</td>' +
+                        '        <td>' + fridge.manufacturer + '</td>' +
+                        '        <td>' + fridge.distributer + '</td>' +
+                        '        <td>' + fridge.coolant + '</td>' +
+                        '        <td>' + fridge.type + '</td>' +
+                        '        <td>' + fridge.cost + '</td>' +
+                        '        <td>' + fridge.volume + '</td>' +
+                        '        <td>' + fridge.power + '</td>' +
+                        '        <td><button onclick="deleteref(' + ref.id + ')">Удалить</button></td></tr>';
+
+                }
+                document.getElementById("refEquipList").innerHTML = html;
+            }
+        };
+        xhttp.open("GET", "http://localhost:5438/refrigeration_equipment/findAll", true);
+        xhttp.send();
+    }
+
+    loadRefEquip();
+</script>
+<input id="search_field">
+<button onclick="searchAllByName()">Искать по названию модели</button>
+<br>
+<input id="search_idcolor_field">
+<button onclick="searchAllByIdcolor()">Искать по id цвета</button>
+<br>
+<input id="search_idrar_field">
+<button onclick="searchAllByIdrar()">Искать по id производителя</button>
+<br>
+<input id="search_idexp_field" type = "number">
+<button onclick="searchAllByIdexp()">Искать по id дистрибьютора</button>
+<br>
+<input id="search_idcond_field">
+<button onclick="searchAllByIdcond()">Искать по id типа</button>
+<br>
+<input id="search_idillustrator_field" type="number">
+<button onclick="searchAllByIdillustrator()">Искать по id хладагента</button>
+<br>
+
+<br>
+<br>
+<b>Фильтрация</b>
+<br>
+<b>Стоимость</b>
+<select id="filter_options">
+    <option>Больше</option>
+    <option>Меньше</option>
+    <option>Равно</option>
+</select>
+<input id="filter_cost_field">
+<button onclick="searchAllByCost()">Фильтровать</button>
+<br>
+<b>Мощность</b>
+<select id="filter_am_options">
+    <option>Больше</option>
+    <option>Меньше</option>
+    <option>Равно</option>
+</select>
+<input id="filter_am_field" type="number">
+<button onclick="searchAllByAmount()">Фильтровать</button>
+<br>
+<b>Объём</b>
+<select id="filter_v_options">
+    <option>Больше</option>
+    <option>Меньше</option>
+    <option>Равно</option>
+</select>
+<input id="filter_v_field" type="number">
+<button onclick="searchAllByAmount()">Фильтровать</button>
+<br>
+<br>
+<b>Результаты поиска:</b>
+<br>
+<table id="RefEquipList">
+
+</table>
+</body>
+</html>

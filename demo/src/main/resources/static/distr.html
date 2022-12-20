@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ru" xml:lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <link href="StyleSheet.css" rel="stylesheet">
+</head>
+<body>
+<meta charset="UTF-8">
+<header>
+    <p><a href="index.html">Холодильное оборудование</a></p>
+    <p><a href="coolants.html">Хладагенты</a></p>
+    <p><a href="countries.html">Страны</a></p>
+    <p><a href="cities.html">Города</a></p>
+    <p><a href="distr.html">Дистрибьюторы</a></p>
+    <p><a href="colors.html">Цвета</a></p>
+    <p><a href="mans.html">Производители</a></p>
+    <p><a href="types.html">Типы оборудования</a></p>
+    <br>
+</header>
+<h2>Дистрибьюторы</h2>
+<b>Добавление</b>
+<br>
+
+
+<form action="#">
+    <input id="name" placeholder="Дистрибьютор">
+
+</form>
+
+<br>
+<b>Поиск по полям</b>
+<br>
+<input id="search_field">
+<script>
+
+function searchAllByName() {
+        var name = document.getElementById("search_field").value;
+        if (name.length == 0) loadDistrs();
+        else {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                var distrs = JSON.parse(this.responseText);
+                var html = '<tr>\n' +
+                    '        <th>Id</th>\n' +
+                    '        <th>Название</th>\n' +
+                    '        <th>Город</th>\n' +
+                    '    </tr>';
+                for (var i = 0; i < distrs.length; i++) {
+                        var distr = distrs[i];
+                        if (distr.name.toLowerCase().includes(name.toLowerCase())) {
+                        console.log(distr);
+                       html = html + '<tr><td>' + distr.id + '</td>\n' +
+                        '        <td>' + distr.name + '</td>\n' +
+                        '        <td>' + distr.city + '</td>\n' +
+                    }
+                }
+                document.getElementById("distrsList").innerHTML = html;
+            }
+        };
+        xhttp.open("GET", "http://localhost:5438/distr/findAll", true);
+        xhttp.send();
+        }
+    }
+
+    function loadDistrs() {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                var distrs = JSON.parse(this.responseText);
+                var html = '<tr>\n' +
+                    '        <th>Id</th>\n' +
+                    '        <th>Название</th>\n' +
+                    '        <th>Город</th>\n' +
+                    '    </tr>';
+                for (var i = 0; i < distrs.length; i++) {
+                    var distr = distrs[i];
+                    console.log(distr);
+                    html = html + '<tr><td>' + distr.id + '</td>\n' +
+                        '        <td>' + distr.name + '</td>\n' +
+                        '        <td>' + distr.city + '</td>\n' +
+
+                }
+                document.getElementById("distrsList").innerHTML = html;
+            }
+        };
+        xhttp.open("GET", "http://localhost:5438/distr/findAll", true);
+        xhttp.send();
+    }
+
+    loadDistrs();
+</script>
+
+<button onclick="searchAllByName()">Искать дистрибьютора</button>
+<br>
+<br>
+<b>Результаты поиска:</b>
+<br>
+<table id="distrsList">
+
+</table>
+</body>
+</html>

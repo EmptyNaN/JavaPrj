@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ru" xml:lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <link href="StyleSheet.css" rel="stylesheet">
+</head>
+<body>
+<meta charset="UTF-8">
+<header>
+    <p><a href="index.html">Холодильное оборудование</a></p>
+    <p><a href="coolants.html">Хладагенты</a></p>
+    <p><a href="countries.html">Страны</a></p>
+    <p><a href="cities.html">Города</a></p>
+    <p><a href="distr.html">Дистрибьюторы</a></p>
+    <p><a href="colors.html">Цвета</a></p>
+    <p><a href="mans.html">Производители</a></p>
+    <p><a href="types.html">Типы оборудования</a></p>
+    <br>
+</header>
+<h2>Cтраны</h2>
+<b>Добавление</b>
+<br>
+
+
+<form action="#">
+    <input id="name" placeholder="Страна">
+    <button onclick="createCity()">Добавить страну</button>
+</form>
+
+<br>
+<b>Поиск по полям</b>
+<br>
+<input id="search_field">
+<script>
+
+function searchAllByName() {
+        var name = document.getElementById("search_field").value;
+        if (name.length == 0) loadCountries();
+        else {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                var countries = JSON.parse(this.responseText);
+                var html = '<tr>\n' +
+                    '        <th>Id</th>\n' +
+                    '        <th>Страна</th>\n' +
+                    '        <th>Удаление</th>\n' +
+                    '    </tr>';
+                for (var i = 0; i < countries.length; i++) {
+                        var country = countries[i];
+                        if (country.name.toLowerCase().includes(name.toLowerCase())) {
+                        console.log(city);
+                        html = html + '<tr><td>' + country.id + '</td>\n' +
+                            '        <td>' + country.name + '</td>\n' +
+                            '        <td><button onclick="deleteCountry(' + city.id + ')">Удалить</button></td></tr>';
+                    }
+                }
+                document.getElementById("countriesList").innerHTML = html;
+            }
+        };
+        xhttp.open("GET", "http://localhost:5438/countries/findAll", true);
+        xhttp.send();
+        }
+    }
+
+    function deleteCity(countryId) {
+        var xhttp = new XMLHttpRequest();
+        xhttp.open("DELETE", "http://localhost:5438/countries/delete/" + countryId, true);
+        xhttp.send();
+    }
+
+    function createCity() {
+        var countryName = document.getElementById("name").value;
+
+        var xmlhttp = new XMLHttpRequest();   // new HttpRequest instance
+        xmlhttp.open("POST", "http://localhost:5438/countries/save");
+        xmlhttp.setRequestHeader("Content-Type", "application/json");
+        xmlhttp.send(JSON.stringify({name: countryName}));
+
+        loadCountries();
+    }
+
+    function loadCountries() {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                var countries = JSON.parse(this.responseText);
+                var html = '<tr>\n' +
+                    '        <th>Id</th>\n' +
+                    '        <th>Страна</th>\n' +
+                    '    </tr>';
+                for (var i = 0; i < countries.length; i++) {
+                    var country = countries[i];
+                    console.log(city);
+                    html = html + '<tr><td>' + country.id + '</td>\n' +
+                        '        <td>' + country.name + '</td>\n' +
+
+                }
+                document.getElementById("countriesList").innerHTML = html;
+            }
+        };
+        xhttp.open("GET", "http://localhost:5438/countries/findAll", true);
+        xhttp.send();
+    }
+
+    loadCountries();
+</script>
+
+<button onclick="searchAllByName()">Искать страну</button>
+<br>
+<br>
+<b>Результаты поиска:</b>
+<br>
+<table id="countriesList">
+
+</table>
+</body>
+</html>

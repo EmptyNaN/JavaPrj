@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ru" xml:lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <link href="StyleSheet.css" rel="stylesheet">
+</head>
+<body>
+<meta charset="UTF-8">
+<header>
+    <p><a href="index.html">Холодильное оборудование</a></p>
+    <p><a href="coolants.html">Хладагенты</a></p>
+    <p><a href="countries.html">Страны</a></p>
+    <p><a href="cities.html">Города</a></p>
+    <p><a href="distr.html">Дистрибьюторы</a></p>
+    <p><a href="colors.html">Цвета</a></p>
+    <p><a href="mans.html">Производители</a></p>
+    <p><a href="types.html">Типы оборудования</a></p>
+    <br>
+</header>
+
+<br>
+<h2>Цвета</h2>
+
+<b>Поиск по полям</b>
+<br>
+<input id="search_field">
+<script>
+
+function searchAllByName() {
+        var name = document.getElementById("search_field").value;
+        if (name.length == 0) loadColors();
+        else {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                var colors = JSON.parse(this.responseText);
+                var html = '<tr>\n' +
+                    '        <th>Id</th>\n' +
+                    '        <th>Цвет</th>\n' +
+                    '    </tr>';
+                for (var i = 0; i < colors.length; i++) {
+                        var color = colors[i];
+                        if (color.name.toLowerCase().includes(name.toLowerCase())) {
+                        console.log(color);
+                        html = html + '<tr><td>' + color.id + '</td>\n' +
+                            '        <td>' + color.color + '</td></tr>';
+                    }
+                }
+                document.getElementById("colorsList").innerHTML = html;
+            }
+        };
+        xhttp.open("GET", "http://localhost:5438/colors/findAll", true);
+        xhttp.send();
+        }
+    }
+
+    function loadColors() {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                var colors = JSON.parse(this.responseText);
+                var html = '<tr>\n' +
+                    '        <th>Id</th>\n' +
+                    '        <th>Цвет</th>\n' +
+                    '    </tr>';
+                for (var i = 0; i < colors.length; i++) {
+                    var color = colors[i];
+                    console.log(color);
+                    html = html + '<tr><td>' + color.id + '</td>\n' +
+                        '        <td>' + color.name + '</td></tr>';
+
+                }
+                document.getElementById("colorsList").innerHTML = html;
+            }
+        };
+        xhttp.open("GET", "http://localhost:5438/colors/findAll", true);
+        xhttp.send();
+    }
+
+    loadColors();
+</script>
+<button onclick="searchAllByName()">Искать цвет</button>
+<br>
+<br>
+<b>Результаты поиска:</b>
+<br>
+<table id="colorsList">
+
+</table>
+</body>
+</html>
